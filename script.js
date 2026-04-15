@@ -1,11 +1,17 @@
 const input = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const list = document.getElementById("tasklist");
+const taskCount = document.getElementById("taskCount");
+const clearBtn = document.getElementById("clearBtn");
 
 let tasks = [];
 
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function updateCount() {
+    taskCount.textContent = "You have " + tasks.length + " tasks";
 }
 
 function loadTasks() {
@@ -15,6 +21,7 @@ function loadTasks() {
         tasks.forEach(function(task) {
             renderTask(task);
         });
+        updateCount();
     }
 }
 
@@ -45,6 +52,7 @@ function renderTask(task) {
             return t.id !== task.id;
         });
         saveTasks();
+        updateCount();
     });
     li.appendChild(deleteBtn);
 
@@ -67,9 +75,15 @@ addBtn.addEventListener("click", function() {
     tasks.push(task);
     saveTasks();
     renderTask(task);
+    updateCount();
     input.value = "";
 });
 
+clearBtn.addEventListener("click", function() {
+    tasks = [];
+    saveTasks();
+    list.innerHTML = "";
+    updateCount();
+});
+
 loadTasks();
-
-
