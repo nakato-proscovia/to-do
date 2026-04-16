@@ -3,6 +3,7 @@ const addBtn = document.getElementById("addBtn");
 const list = document.getElementById("tasklist");
 const taskCount = document.getElementById("taskCount");
 const clearBtn = document.getElementById("clearBtn");
+const fetchDataBtn = document.getElementById("fetchDataBtn");
 
 let tasks = [];
 
@@ -87,3 +88,18 @@ clearBtn.addEventListener("click", function() {
 });
 
 loadTasks();
+
+// Fetchtasks from Fake API
+fetchDataBtn.addEventListener("click", () => {
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=6')
+        .then(response => response.json())
+        .then(todos => {
+            todos.forEach(todo => {
+                const task = { id: todo.id, title: todo.title };
+                tasks.push(task);
+                renderTask(task);
+            });
+            saveTasks();
+            updateCount();
+        });
+});
